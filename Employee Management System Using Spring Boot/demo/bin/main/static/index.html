@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <title>Employee portal</title>
+  </head>
+
+  <body>
+    <div>
+      Enter emp name: <input id="emp_name" type="text" /> <br />
+      <br />
+      Enter emp age: <input id="emp_age" type="number" /> <br />
+      <br />
+      Enter emp salary: <input id="emp_salary" type="text" /> <br />
+      <br />
+      <button onclick="addEmp()">Add emp</button>
+    </div>
+
+    <a href="/list-emp.html">List employee</a>
+    <!-- <h1>
+            Employee List
+        </h1>
+        <form id="addEmployeeForm">
+            <label for="id">ID: </label>
+            <input type="text" id="id" name="id"><br><br>
+
+            <label for="name">NAME: </label>
+            <input type="text" id="name" name="name"><br><br>
+
+            <input type="submit" value="Add Employee">
+        </form>
+
+        <button id="getAllEmployeeBtn">Get All Employee</button>
+
+        <ul id="employeeList"></ul> -->
+
+    <script>
+      // var empIdElem = document.getElementById("empid");
+      var empNameElem = document.getElementById("emp_name");
+      var empAgeElem = document.getElementById("emp_age");
+      var empSalaryElem = document.getElementById("emp_salary");
+
+      function addEmp() {
+        var employee = {
+          name: empNameElem.value,
+          age: empAgeElem.value,
+          salary: empSalaryElem.value,
+        };
+        console.log(employee)
+        fetch("http://localhost:9001/employee/AddORUpdate", {
+          method: "post",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(employee),
+        })
+          .then((response) => {
+            console.log(response);
+            
+            alert("Employee added successfully");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Employee not added");
+          });
+      }
+
+      // const addEmployeeForm=document.getElementById('addEmployeeForm');
+      // const getAllEmployeeBtn=document.getElementById('getAllEmployee');
+      // const employeeList=document.getElementById('employeeList');
+
+      // addEmployeeForm.addEventListener('submit', event =>){
+      //     event.preventDefault();
+      // }
+    </script>
+  </body>
+</html>

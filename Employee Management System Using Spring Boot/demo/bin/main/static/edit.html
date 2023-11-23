@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>edit</h2>
+    <div>
+        Enter emp name: <input id="emp_name" type="text" /> <br />
+        <br />
+        Enter emp age: <input id="emp_age" type="number" /> <br />
+        <br />
+        Enter emp salary: <input id="emp_salary" type="text" /> <br />
+        <br />
+        <table>
+        <tbody>
+            <tr>
+              <td>
+                <tbody id="table-body"></tbody>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <a href="/list-emp.html">List employee</a>
+    <script>
+
+fetch("http://localhost:9001/employee/allEmp")
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Error:" + response.status);
+        }
+      })
+      .then((data) => {
+        let ubtn = document.getElementById("table-body");
+        // var employeeList = document.getElementById("employeeList");
+        // console.log(employeeList);
+        // employeeList.innerHTML = "";
+
+        data.forEach((employee) => {
+          console.log("emp id", employee.id);
+        //   console.log(employee.salary);
+          let records = [
+            {
+              id: employee.id,
+              name: employee.name,
+              age: employee.age,
+              sal: employee.salary,
+            },
+          ];
+
+            let tr = document.createElement("tr");
+
+            let editTd = document.createElement("td");
+
+
+            editTd.innerHTML =
+              `<a href="/edit.html"><button onclick="editRecord(${employee.id})">edit</button></a>`;
+
+              tr.appendChild(editTd);
+
+              ubtn.appendChild(tr);
+          
+
+        });
+      })
+      .catch((error) => {
+        alert("error while fetching employees");
+        console.error(error);
+      });
+
+
+
+      var empNameElem = document.getElementById("emp_name");
+      var empAgeElem = document.getElementById("emp_age");
+      var empSalaryElem = document.getElementById("emp_salary");
+
+      function editRecord(id) {
+      console.log("Button clicked");
+      var emp = {
+        id: id,
+        name: empNameElem.value,
+        age: empAgeElem.value,
+        salary: empSalaryElem.value,
+      };
+
+      fetch("http://localhost:9001/employee/update/" + emp.id, {
+        method: "put",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(emp),
+      })
+        .then((response) => {
+          console.log(response);
+          alert("Employee removed successfully");
+          location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Employee not added");
+        });
+    }
+
+
+    </script>
+</body>
+</html>

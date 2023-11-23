@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      Enter emp id: <input id="empid" type="number" /> <br />
+      <button onclick="myFunction()">delete</button>
+    </div>
+
+    <a href="/list-emp.html">List employee</a>
+  </body>
+
+  <script>
+      
+    //   var empNameElem = document.getElementById("emp_name");
+    //   var empAgeElem = document.getElementById("emp_age");
+    //   var empSalaryElem = document.getElementById("emp_salary");
+    //   console.log(empIdElem.value);
+
+
+      function myFunction() {
+        let empIdElem = document.getElementById("empid");
+        let empid = parseInt(empIdElem.value);
+        console.log(empid,typeof empid);
+        var employee = {
+          id: empid
+
+        };
+        // console.log(parseInt(employee));
+        // console.log(employee.value);
+        fetch("http://localhost:9001/employee/delete/" + empid, {
+          method: "delete",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(parseInt(employee)),
+        })
+          .then((response) => {
+            console.log(response);
+            alert("Employee added successfully");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Employee not added");
+          });
+      }
+  </script>
+</html>
